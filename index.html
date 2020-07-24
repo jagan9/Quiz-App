@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>QUIZ Application</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="shortcut icon" href="favicon.png">
+
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    body{
+      background-image: url(bg.jpg);
+      color: white;
+      background-size: 100% 100%;
+      height: 100vh;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body >
+<div class="container">
+  
+  <button class="btn btn-primary mt-3 btn-block mb-4"  id="start_btn">start</button>
+  <div class="text-center">
+  <p id="displayscore"></p>
+  </div>
+  <div style="display: none;" id="block" class="x">
+    <h3 id="question"></h3>
+    <input id="option1" type="radio" name="q">
+    <label id="option1_value"></label></input><br>
+    <input id="option2" type="radio" name="q" >
+    <label id="option2_value"></label></input><br>
+    <input id="option3" type="radio" name="q" >
+    <label id="option3_value"></label></input><br>
+    <input id="option4" type="radio" name="q" >
+    <label id="option4_value"></label></input><br>
+    <p id="span" style="display: none;" class="alert alert-danger">please select answer</p>
+    <button id="next_question" class="btn btn-danger">next</button>
+  </div>
+</div>
+
+<script type="text/javascript" src="questions.js"></script>
+<script type="text/javascript">
+  var question=document.getElementById("question");
+  var option1_value=document.getElementById("option1_value");
+  var option2_value=document.getElementById("option2_value");
+  var option3_value=document.getElementById("option3_value");
+  var option4_value=document.getElementById("option4_value");
+  var displayscore=document.getElementById("displayscore");
+  var option1=document.getElementById("option1");
+  var option2=document.getElementById("option2");
+  var option3=document.getElementById("option3");
+  var option4=document.getElementById("option4");
+  var start_btn=document.getElementById('start_btn');
+  var block=document.getElementById("block");
+  var next_question=document.getElementById("next_question");
+  var span=document.getElementById("span");
+  var index=0;
+  var i=0;
+  var user_score=0;
+
+  start_btn.addEventListener("click",handlestartbtn);
+  next_question.addEventListener("click",handlenext);
+
+  function handlestartbtn(e) {
+    if(i==0)
+    {
+    i++;
+    block.style.display="block";
+    start_btn.innerHTML="restart";
+    
+    handlequestions(index);
+    }
+
+
+    else
+    {
+    block.style.display="block";
+    next_question.innerHTML="next";
+    index=0;
+    user_score=0;
+    displayscore.style.display="none";
+
+
+    handlequestions(index);
+    }
+
+
+   
+   
+   
+    
+  }
+
+  function handlenext(e) {
+    
+  
+    var option=document.querySelector("input:checked");
+   // console.log(option);
+    if (option) {
+     if(option.value==allquestions[index].options[allquestions[index].correct]){
+      user_score++;
+     //console.log("correct");
+     }
+     if (index+2==allquestions.length) {
+      next_question.innerHTML="submit";
+     }
+     if(index+1==allquestions.length){
+      displayscore.innerHTML="you scored : "+`<h1>${user_score}/${allquestions.length}</h1>`;
+      displayscore.style.display="block";
+      block.style.display="none";
+     }else{
+
+    index++;
+    handlequestions(index);
+   
+    }
+  }
+  else{
+    span.style.display="block";
+    setTimeout(()=>{
+      span.style.display="none";
+    },2000);
+  }
+   
+   option.checked=false;
+    
+  }
+
+  function handlequestions() {
+    question.innerHTML=allquestions[index].question;
+    option1_value.innerHTML=allquestions[index].options[0];
+    option2_value.innerHTML=allquestions[index].options[1];
+    option3_value.innerHTML=allquestions[index].options[2];
+    option4_value.innerHTML=allquestions[index].options[3];
+
+    option1.value=allquestions[index].options[0];
+    option2.value=allquestions[index].options[1];
+    option3.value=allquestions[index].options[2];
+    option4.value=allquestions[index].options[3];
+  }
+</script>
+</body>
+</html>
